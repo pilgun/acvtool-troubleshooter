@@ -1,0 +1,1 @@
+ACVTOOL_PATH = r"C:\projects\droidmod-smali-modifier"
