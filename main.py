@@ -19,6 +19,13 @@ Out: %s\nError: %s" % (out, err))
 
     return res
 
+def instrument(start_instrumented, end_instrumented, apk_path):
+    cmd = "{0} {1} instrument -dbgstart {2} -dbgend {3} {4}".format(config.PYTHON, 
+        os.path.join(config.ACVTOOL_PATH, 'smiler', 'acvtool.py'),
+        right_current, right_current, apk_path)
+    result = request_pipe(cmd)
+    return result
+
 if __name__ == "__main__":
     apk_path = ""
 
@@ -32,6 +39,7 @@ if __name__ == "__main__":
     is_apk_generated =False
     result = None
     while is_exception:
+        instrument(start_instrumented, end_instrumented, apk_path)
         cmd = "py {0}/smiler/acvtool.py instrument -dbgstart {0} -dbgend {1} {2}".format(config.ACVTOOL_PATH, start_instrumented, end_instrumented, apk_path)
         try:
             result = request_pipe(cmd)
@@ -70,7 +78,6 @@ if __name__ == "__main__":
             if right_current == right_failed:
                 break
 
-    cmd = "py {0}/smiler/acvtool.py instrument -dbgstart {0} -dbgend {1} {2}".format(config.ACVTOOL_PATH, right_current, right_current, apk_path)
-    result = request_pipe(cmd)
+    instrument(start_instrumented, end_instrumented, apk_path)
     
     print("hello")
