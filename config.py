@@ -1,2 +1,2 @@
-ACVTOOL_PATH = r"~/projects/droidmod-smali-modifier"
-PYTHON = r"python3"
+ACVTOOL_PATH = r"C:\projects\droidmod-smali-modifier"
+PYTHON = r"c:\Python27\python.exe"

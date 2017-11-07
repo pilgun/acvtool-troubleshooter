@@ -2,18 +2,18 @@
 import os
 import subprocess
 import math
+import argparse
 
 import config
 
-def main():
-    apk_path = ""
-
+def main(apk_path):
     MAX_METHODS = 150000
 
     left = 0
     right_failed =  MAX_METHODS
     right = right_failed
-    while is_exception and not is_apk_generated:
+    successfull = False
+    while left is not right or (left == right and successfull):
         print("Instrumenting the methods from {0} to {1} ...".format(left, right))
         successfull = try_repack(left, right, apk_path)
 
@@ -40,7 +40,7 @@ def try_repack(left, right, apk_path):
     if os.path.exists(generated_apk_path):
         os.remove(generated_apk_path)
 
-    instrument_app(left, right, apk_path)
+    acvtool_call(left, right, apk_path)
     try:
         result = request_pipe(cmd)
         is_apk_generated = os.path.exists(generated_apk_path)
@@ -62,12 +62,31 @@ Out: %s\nError: %s" % (out, err))
 
     return res
 
-def instrument_app(start_instrumented, end_instrumented, apk_path):
+def acvtool_call(left, right, apk_path):
     cmd = "{0} {1} instrument -dbgstart {2} -dbgend {3} {4}".format(config.PYTHON, 
         os.path.join(config.ACVTOOL_PATH, 'smiler', 'acvtool.py'),
-        right_current, right_current, apk_path)
+        left, right, apk_path)
     result = request_pipe(cmd)
     return result
 
+def get_parser():
+    parser = argparse.ArgumentParser(prog='main.py', 
+        description='This script is designed to help in finding the method \
+        that is bad instrumented by acvtool.')
+    parser.add_argument("apk_path", metavar="<path_to_apk>", 
+            help="Path to apk file")
+    return parser
+
+def run_actions(args):
+    if not os.path.exists(args.apk_path):
+        print("Can't find apk by the path provided.")
+        return
+    main(args.apk_path)
+
+
 if __name__ == "__main__":
-    main()
+    parser = get_parser()
+    #args = parser.parse_args()
+    args = parser.parse_args([r"C:\apks\originalapk\FDroid.apk"])
+    print(args.apk_path)
+    run_actions(args)
