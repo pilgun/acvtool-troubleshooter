@@ -9,40 +9,6 @@ def main():
     apk_path = ""
 
     MAX_METHODS = 150000
-    failed_instrumented = MAX_METHODS
-    start_instrumented = 0
-    end_instrumented = MAX_METHODS
-
-    is_exception = True
-    is_apk_generated = False
-    result = None
-    while is_exception:
-        print("Instrumenting the methods from {0} to {1} ...".format(start_instrumented, end_instrumented))
-        instrument_app(start_instrumented, end_instrumented, apk_path)
-        try:
-            result = request_pipe(cmd)
-            is_apk_generated = os.path.exists(generated_apk)
-
-        except Exception:
-            is_exception = True
-        
-        if not is_apk_generated or is_exception:
-            print("Failed.")
-            failed_instrumented = end_instrumented
-            end_instrumented = start_instrumented + math.floor((failed_instrumented - start_instrumented)/2)
-
-        if not is_exception and is_apk_generated:
-            if start_instrumented == 0 and end_instrumented == MAX_METHODS:
-                print("The app was repackaged properly. Exit.")
-                return
-            print("Success.")
-            start_instrumented = end_instrumented + math.ceil(failed_instrumented-end_instrumented)/2)
-            end_instrumented = failed_instrumented
-        
-
-        if failed_instrumented - correct_instrumented > 1:
-            pass
-    
 
     left = 0
     right_failed =  MAX_METHODS
@@ -58,7 +24,7 @@ def main():
             print("Failed.")
             right_failed = right
             right = math.floor( (right_failed + left) / 2)
-            # here if left == right then we expect that instumenting faild either in left ofr 
+            # here if left == right then we expect that instrumenting faild either in left or left+1?
 
         if successfull:
             if left == 0 and end_instrumented == MAX_METHODS:
