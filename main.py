@@ -40,9 +40,8 @@ def try_repack(left, right, apk_path):
     if os.path.exists(generated_apk_path):
         os.remove(generated_apk_path)
 
-    acvtool_call(left, right, apk_path)
     try:
-        result = request_pipe(cmd)
+        acvtool_call(left, right, apk_path)
         is_apk_generated = os.path.exists(generated_apk_path)
         return is_apk_generated
     except Exception:
@@ -57,13 +56,12 @@ def request_pipe(cmd):
         res = err
     
     if pipe.returncode > 0:
-        raise Exception("----------------------------------------------------\n\
-Out: %s\nError: %s" % (out, err))
+        print("return_code: {0}".format(pipe.returncode))
 
     return res
 
 def acvtool_call(left, right, apk_path):
-    cmd = "{0} {1} instrument -dbgstart {2} -dbgend {3} {4}".format(config.PYTHON, 
+    cmd = "{0} {1} instrument --dbgstart {2} --dbgend {3} -r {4}".format(config.PYTHON, 
         os.path.join(config.ACVTOOL_PATH, 'smiler', 'acvtool.py'),
         left, right, apk_path)
     result = request_pipe(cmd)
