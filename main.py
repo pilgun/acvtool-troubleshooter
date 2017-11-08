@@ -27,7 +27,7 @@ def main(apk_path):
             # here if left == right then we expect that instrumenting faild either in left or left+1?
 
         if successfull:
-            if left == 0 and end_instrumented == MAX_METHODS:
+            if left == 0 and right == MAX_METHODS:
                 print("The full app was instrumented and repackaged properly. Exit.")
                 return
             print("Success.")
