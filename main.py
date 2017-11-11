@@ -7,6 +7,8 @@ import argparse
 import config
 
 def main(apk_path):
+    # One DEX file has max 65k methods. One APK has 2 DEX files in the most.
+    # 150000 might suit any APK.
     MAX_METHODS = 150000
 
     left = 0
@@ -23,7 +25,7 @@ def main(apk_path):
                 return
             print("Failed.")
             right_failed = right
-            right = math.floor( (right_failed + left) / 2)
+            right = math.floor( (right + left) / 2)
             # here if left == right then we expect that instrumenting faild either in left or left+1?
 
         if successfull:
