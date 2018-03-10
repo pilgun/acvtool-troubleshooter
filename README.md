@@ -1,2 +1,2 @@
-# acvtool-troubleshooter
-This is a troubleshooter for acvtool. Helps to find a method where the instrumentation was failing.
+# troubleshooter
+This is a troubleshooter for the tool. Helps to find a method where the instrumentation was failing.
